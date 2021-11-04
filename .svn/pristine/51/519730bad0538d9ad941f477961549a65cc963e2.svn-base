@@ -1,0 +1,66 @@
+package com.team.app.myPage;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.team.action.ActionForward;
+
+public class MyPageFrontController extends HttpServlet{
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+
+	protected void doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String command = requestURI.substring(contextPath.length());
+		ActionForward forward = null;
+
+		switch (command) {
+		case "/myPage/MyPageAddressRegistOk.mp":
+			try {forward = new MyPageAddressRegistOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageAddressListOk.mp":
+			try {forward = new MyPageAddressListOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageCartListOk.mp":
+			try {forward = new MyPageCartListOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPagePurchaseListOk.mp":
+			try {forward = new MyPagePurchaseListOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageCartInsertOk.mp":
+			try {forward = new MyPageCartInsertOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageInquireListOk.mp":
+			try {forward = new MyPageInquireListOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageConsultListOk.mp":
+			try {forward = new MyPageConsultListOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+			break;
+		case "/myPage/MyPageCartDeleteOk.mp":
+	        try {forward = new MyPageCartDeleteOkAction().execute(req, resp);} catch(Exception e) {System.out.println(e);}
+	        break;
+		}
+		
+		if (forward != null) {
+			if (forward.isRedirect()) {
+				resp.sendRedirect(forward.getPath());
+			} else {
+				RequestDispatcher dispatcher = req.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(req, resp);
+			}
+		}
+	}
+}

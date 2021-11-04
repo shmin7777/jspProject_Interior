@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Brag_Board">
+
+	<!-- 페이지별 문의글 목록 -->
+	<select id="getList" parameterType="map" resultType="Brag_BoardVO">
+		SELECT
+		D.BRAG_BOARD_NO, D.USER_NO, BRAG_BOARD_TITLE,
+		BRAG_BOARD_CONTENT, BRAG_BOARD_DATE, E.USER_ID
+		FROM
+		(SELECT ROWNUM R, C.*
+		FROM
+		(SELECT * FROM TABLE_BRAG_BOARD ORDER BY BRAG_BOARD_NO DESC) C) D,
+		TABLE_USER E
+		WHERE (R BETWEEN 1 AND 10) AND D.USER_NO=E.USER_NO
+	</select>
+
+	<!-- 전체 문의글 수 -->
+	<select id="getTotal" resultType="_int">
+		SELECT COUNT(BRAG_BOARD_NO) FROM
+		TABLE_BRAG_BOARD
+	</select>
+
+	<!-- 문의글 추가 -->
+	<insert id="insertBoard" parameterType="Brag_BoardVO">
+		INSERT INTO TABLE_BRAG_BOARD
+		(BRAG_BOARD_NO, USER_NO, BRAG_BOARD_TITLE, BRAG_BOARD_CONTENT, BRAG_BOARD_DATE)
+		VALUES (SEQ_BRAG_BOARD.NEXTVAL, #{user_no}, #{brag_board_title}, #{brag_board_content}, SYSDATE)
+	</insert>
+
+	<select id="getSeq" resultType="_int">
+		SELECT SEQ_BRAG_BOARD.CURRVAL FROM
+		DUAL
+	</select>
+
+	<!-- 문의글 상세보기 -->
+	<select id="getDetail" parameterType="_int" resultType="Brag_BoardVO">
+		SELECT BRAG_BOARD_NO, A.USER_NO, BRAG_BOARD_TITLE, BRAG_BOARD_CONTENT, BRAG_BOARD_DATE, B.USER_ID
+		FROM
+		TABLE_BRAG_BOARD A, TABLE_USER B
+		WHERE BRAG_BOARD_NO = #{brag_board_no} AND
+		A.USER_NO=B.USER_NO
+	</select>
+
+	<!-- 문의글 수정 -->
+	<update id="update" parameterType="Brag_BoardVO">
+		UPDATE TABLE_BRAG_BOARD
+		SET
+		BRAG_BOARD_TITLE = #{brag_board_title},
+		BRAG_BOARD_CONTENT = #{brag_board_content}
+		WHERE BRAG_BOARD_NO = #{brag_board_no}
+	</update>
+
+	<!-- 문의글 삭제 -->
+	<delete id="delete" parameterType="_int">
+		DELETE FROM TABLE_BRAG_BOARD
+		WHERE BRAG_BOARD_NO = #{brag_board_no}
+	</delete>
+
+	<!-- 회원번호 가져오기 -->
+	<select id="get_user_no" parameterType="String"
+		resultType="_int">
+		SELECT USER_NO FROM TABLE_USER WHERE USER_ID=#{user_id}
+	</select>
+
+	
+	<!-- 댓글등록 -->
+	<insert id="insertReply" parameterType="Brag_ReplyVO">
+		INSERT INTO TABLE_BRAG_REPLY
+		VALUES(SEQ_BRAG_REPLY.NEXTVAL, #{user_no},#{brag_board_no}, 
+		#{brag_reply_content}, SYSDATE)
+	</insert>
+
+	<!-- 댓글목록  -->
+	<select id="getReplyList" parameterType="_int" resultType="Brag_ReplyVO">
+		SELECT a.BRAG_REPLY_NO, b.BRAG_BOARD_NO, a.USER_ID,
+		a.BRAG_REPLY_CONTENT, a.BRAG_REPLY_DATE
+		FROM
+		(SELECT * FROM TABLE_USER u,
+		TABLE_BRAG_REPLY r
+		WHERE u.USER_NO = r.USER_NO) a, TABLE_BRAG_BOARD b
+		WHERE
+		a.BRAG_BOARD_NO = b.BRAG_BOARD_NO ORDER BY BRAG_REPLY_DATE DESC
+	</select>
+	
+	<!-- 댓글 번호로 댓글 삭제 -->
+	<delete id="deleteReplyByBragReplyNo" parameterType="_int">
+		DELETE FROM
+		TABLE_BRAG_REPLY
+		WHERE BRAG_REPLY_NO = #{brag_reply_no}
+	</delete>
+	
+	<!-- 게시글 번호로 댓글 삭제 -->
+	<delete id="deleteReplyByBragBoardNo" parameterType="_int">
+		DELETE FROM
+		TABLE_BRAG_REPLY
+		WHERE BRAG_BOARD_NO = #{brag_board_no}
+	</delete>
+ 
+ 	<!-- 댓글 수정 -->
+	<update id="updateReply" parameterType="Brag_ReplyVO">
+		UPDATE TABLE_BRAG_REPLY SET
+		BRAG_REPLY_CONTENT = #{brag_reply_content}
+		WHERE BRAG_REPLY_NO =
+		#{brag_reply_no}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+

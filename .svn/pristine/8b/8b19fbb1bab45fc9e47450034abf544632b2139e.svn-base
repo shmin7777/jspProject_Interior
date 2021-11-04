@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>test01</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+   <servlet>
+     <servlet-name>UserFrontController</servlet-name>
+     <servlet-class>com.team.app.user.UserFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>UserFrontController</servlet-name>
+   <url-pattern>*.me</url-pattern>
+  </servlet-mapping>
+  
+  
+   <servlet>
+     <servlet-name>ManageFrontController</servlet-name>
+     <servlet-class>com.team.app.manage.ManageFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>ManageFrontController</servlet-name>
+   <url-pattern>*.mn</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+     <servlet-name>CS_BoardFrontController</servlet-name>
+     <servlet-class>com.team.app.cs.board.CS_BoardFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>CS_BoardFrontController</servlet-name>
+   <url-pattern>*.bo</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+     <servlet-name>Brag_BoardFrontController</servlet-name>
+     <servlet-class>com.team.app.brag.board.Brag_BoardFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>Brag_BoardFrontController</servlet-name>
+     <url-pattern>*.br</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+      <servlet-name>EventFrontController</servlet-name>
+      <servlet-class>com.team.app.event.EventFrontController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>EventFrontController</servlet-name>
+    <url-pattern>*.ev</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+      <servlet-name>StoreFrontController</servlet-name>
+      <servlet-class>com.team.app.store.StoreFrontController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>StoreFrontController</servlet-name>
+    <url-pattern>*.st</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>ConsultFrontController</servlet-name>
+      <servlet-class>com.team.app.consult.ConsultFrontController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>ConsultFrontController</servlet-name>
+    <url-pattern>*.co</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+      <servlet-name>NoticeFrontController</servlet-name>
+      <servlet-class>com.team.app.notice.NoticeFrontController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>NoticeFrontController</servlet-name>
+    <url-pattern>*.no</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>MyPageFrontController</servlet-name>
+  	<servlet-class>com.team.app.myPage.MyPageFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>MyPageFrontController</servlet-name>
+  	<url-pattern>*.mp</url-pattern>
+  </servlet-mapping>
+
+	<servlet>
+      <servlet-name>CcFrontController</servlet-name>
+      <servlet-class>com.team.app.cc.CcFrontController</servlet-class>
+  	</servlet>
+
+  	<servlet-mapping>
+      	<servlet-name>CcFrontController</servlet-name>
+    	<url-pattern>*.cc</url-pattern>
+ 	</servlet-mapping>
+  
+	<servlet>
+      <servlet-name>PaymentFrontController</servlet-name>
+      <servlet-class>com.team.app.payment.PaymentFrontController</servlet-class>
+  	</servlet>
+
+  	<servlet-mapping>
+      	<servlet-name>PaymentFrontController</servlet-name>
+    	<url-pattern>*.py</url-pattern>
+ 	</servlet-mapping>
+
+
+</web-app>

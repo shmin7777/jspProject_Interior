@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Payment"> 
+	<insert id="addPay" parameterType="PaymentVO">
+		INSERT INTO TABLE_PAYMENT VALUES
+		(
+			SEQ_PAY.NEXTVAL, #{user_id}, #{pay_name}, #{pay_phone}, #{pay_zipcode}, #{pay_address}, #{pay_address_detail},
+			#{pay_address_etc}, #{pay_request}, #{product_no}, #{product_name}, #{product_price}, #{product_cnt},
+			#{product_img}, #{pay_point}, #{pay_way}, #{pay_total_price} , SYSDATE
+		)
+	</insert>
+  
+   
+</mapper>

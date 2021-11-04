@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Notice"> 
+
+   <select id="getList" parameterType="map" resultType="manageNoticeVO">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE
+		FROM
+			(SELECT ROWNUM R, N.* FROM
+				(SELECT * FROM TABLE_NOTICE ORDER BY NOTICE_NO DESC) N)
+		WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+   <!-- 전체 문의글 수 -->
+	<select id="getTotal" resultType="_int">
+		SELECT COUNT(NOTICE_NO) FROM TABLE_NOTICE
+	</select>
+   
+   <!-- 상세보기 -->
+   	<select id="getDetail" parameterType="_int" resultType="manageNoticeVO">
+		SELECT NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE FROM TABLE_NOTICE
+		WHERE NOTICE_NO = #{notice_no}
+	</select>
+   
+   
+   
+   
+   
+   
+   
+   
+</mapper>

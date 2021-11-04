@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Store">
+	<select id="getStoreCategory" resultType="StoreVO" parameterType="map">
+		SELECT * FROM
+		(SELECT ROWNUM R, b.* FROM
+		(SELECT PRODUCT_NO, PRODUCT_CATEGORY, PRODUCT_SUBCATEGORY, 
+		PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_INFO,
+		PRODUCT_IMG, PRODUCT_STEEL1, PRODUCT_STEEL2, PRODUCT_STEEL3 
+		FROM TABLE_STORE
+		WHERE PRODUCT_CATEGORY = #{product_category} ORDER BY PRODUCT_NO DESC) b)
+		WHERE R BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	
+	<!-- 검색 -->
+	<select id="getStoreSearch" resultType="StoreVO" parameterType="string">
+		SELECT * FROM TABLE_STORE WHERE PRODUCT_NAME LIKE '%' || #{product_name} || '%'
+	</select>
+	<!-- 검색 끝 -->
+	<select id="getStoreSubCategory" resultType="StoreVO" parameterType="map">
+		SELECT * FROM TABLE_STORE WHERE PRODUCT_CATEGORY=#{product_category} AND PRODUCT_SUBCATEGORY like #{product_subcategory} || '%'
+	</select>
+	
+	<select id="getDetail" resultType="StoreVO" parameterType="_int">
+		SELECT * FROM TABLE_STORE WHERE PRODUCT_NO = #{product_no}
+	</select>
+	
+	<insert id="addProductReply" parameterType="StoreReviewVO">
+		INSERT INTO TABLE_STORE_REVIEW VALUES
+		(
+			SEQ_STORE_REVIEW.NEXTVAL,#{user_id},#{product_no},#{product_star},#{pro_reply_content},SYSDATE
+		)
+
+	</insert>
+	
+	<select id="getStoreReply" parameterType="_int" resultType="StoreReviewVO">
+		SELECT * FROM TABLE_STORE_REVIEW WHERE PRODUCT_NO=#{product_no}
+	</select>
+	
+	<select id="getBestOf" parameterType="string" resultType="com.team.app.store.vo.StoreBestOfVO">
+		SELECT A.*, rownum FROM
+		(
+		SELECT p.PRODUCT_NAME,count(p.PRODUCT_NAME) c FROM table_payment p, table_store s 
+		where p.PRODUCT_NO = s.PRODUCT_NO AND product_category=#{product_category}
+		GROUP BY p.PRODUCT_NAME ORDER BY c desc
+		) A WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="getBestforName" parameterType="string" resultType="StoreVO">
+		SELECT * FROM TABLE_STORE WHERE PRODUCT_NAME=#{product_name}
+	</select>
+	
+	
+	<select id="getBest" resultType="com.team.app.store.vo.StoreBestOfVO">
+		SELECT A.*, rownum FROM
+		(
+		SELECT p.PRODUCT_NAME,count(p.PRODUCT_NAME) c FROM table_payment p, table_store s
+		where p.PRODUCT_NO = s.PRODUCT_NO
+		GROUP BY p.PRODUCT_NAME ORDER BY c desc
+		) A WHERE ROWNUM BETWEEN 1 AND 16
+
+	</select>
+	
+	<!--상품개수 -->
+	<select id="getTotal" parameterType="string" resultType="_int">
+		SELECT COUNT(PRODUCT_NO) FROM
+		TABLE_STORE WHERE PRODUCT_CATEGORY= #{product_category}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+

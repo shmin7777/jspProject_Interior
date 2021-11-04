@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CS_Board">
+
+	<!-- 페이지별 문의글 목록 -->
+	<select id="getList" parameterType="map" resultType="CS_BoardVO">
+		SELECT
+		D.CS_BOARD_NO, D.USER_NO, CS_BOARD_SELECT, CS_BOARD_TITLE,
+		CS_BOARD_CONTENT, CS_BOARD_DATE, E.USER_ID
+		FROM
+		(SELECT ROWNUM R, C.*
+		FROM
+		(SELECT * FROM TABLE_CS_BOARD ORDER BY CS_BOARD_NO DESC) C) D,
+		TABLE_USER E
+		WHERE (R BETWEEN #{startRow} AND #{endRow}) AND D.USER_NO=E.USER_NO
+	</select>
+
+	<select id="getCategory" parameterType="map" resultType="CS_BoardVO">
+		SELECT * FROM TABLE_CS_BOARD WHERE CS_BOARD_SELECT like #{cs_board_select} || '%'
+	</select>
+	
+	<select id="getTot" parameterType="string" resultType="_int">
+		SELECT COUNT(CS_BOARD_NO) FROM TABLE_CS_BOARD WHERE CS_BOARD_SELECT= #{cs_board_select}
+	</select>
+
+	<!-- 전체 문의글 수 -->
+	<select id="getTotal"  resultType="_int">
+		SELECT COUNT(CS_BOARD_NO) FROM TABLE_CS_BOARD 
+	</select>
+
+	<!-- 문의글 추가 -->
+	<insert id="insertBoard" parameterType="CS_BoardVO">
+		INSERT INTO
+		TABLE_CS_BOARD
+		(CS_BOARD_NO, USER_NO, CS_BOARD_SELECT, CS_BOARD_TITLE,
+		CS_BOARD_CONTENT, CS_BOARD_DATE)
+		VALUES (SEQ_CS_BOARD.NEXTVAL,
+		#{user_no}, #{cs_board_select}, #{cs_board_title},
+		#{cs_board_content}, SYSDATE)
+	</insert>
+
+	<select id="getSeq" resultType="_int">
+		SELECT SEQ_CS_BOARD.CURRVAL FROM DUAL
+	</select>
+
+	<!-- 문의글 상세보기 -->
+	<select id="getDetail" parameterType="_int"
+		resultType="CS_BoardVO">
+		SELECT CS_BOARD_NO, A.USER_NO, CS_BOARD_SELECT,
+		CS_BOARD_TITLE, CS_BOARD_CONTENT, CS_BOARD_DATE, B.USER_ID
+		FROM
+		TABLE_CS_BOARD A, TABLE_USER B
+		WHERE CS_BOARD_NO = #{cs_board_no} AND
+		A.USER_NO=B.USER_NO
+
+	</select>
+
+	<!-- 문의글 수정 -->
+	<update id="update" parameterType="CS_BoardVO">
+		UPDATE TABLE_CS_BOARD
+		SET
+		CS_BOARD_SELECT = #{cs_board_select},
+		CS_BOARD_TITLE =
+		#{cs_board_title},
+		CS_BOARD_CONTENT = #{cs_board_content}
+		WHERE
+		CS_BOARD_NO = #{cs_board_no}
+	</update>
+
+	<!-- 문의글 삭제 -->
+	<delete id="delete" parameterType="_int">
+		DELETE FROM TABLE_CS_BOARD
+		WHERE CS_BOARD_NO = #{cs_board_no}
+	</delete>
+
+	<!-- 회원번호 가져오기 -->
+	<select id="get_user_no" parameterType="String"
+		resultType="_int">
+		SELECT USER_NO FROM TABLE_USER WHERE USER_ID=#{user_id}
+	</select>
+
+	<!-- 댓글 목록 -->
+	<select id="getReplyList" parameterType="_int" resultType="CS_ReplyVO">
+		SELECT a.CS_REPLY_NO, b.CS_BOARD_NO, a.USER_ID,
+		a.CS_REPLY_CONTENT, a.CS_REPLY_DATE
+		FROM
+		(SELECT * FROM TABLE_USER u,
+		TABLE_CS_REPLY r
+		WHERE u.USER_NO = r.USER_NO) a, TABLE_CS_BOARD b
+		WHERE
+		a.CS_BOARD_NO = b.CS_BOARD_NO ORDER BY CS_REPLY_DATE DESC
+	</select>
+
+	<!-- 댓글 추가 -->
+	<!-- <insert id="insertReply" parameterType="CS_ReplyVO"> 
+		INSERT INTO TABLE_CS_REPLY 
+		VALUES(SEQ_CS_REPLY.NEXTVAL, #{cs_board_no}, #{user_no}, #{cs_reply_content}, 
+		SYSDATE) </insert> -->
+
+	<insert id="insertReply" parameterType="CS_ReplyVO">
+		INSERT INTO TABLE_CS_REPLY
+		VALUES(SEQ_CS_REPLY.NEXTVAL, #{user_no},#{cs_board_no}, 
+		#{cs_reply_content}, SYSDATE)
+	</insert>
+
+
+	<!-- 댓글 수정 -->
+	<update id="updateReply" parameterType="CS_ReplyVO">
+		UPDATE TABLE_CS_REPLY SET
+		CS_REPLY_CONTENT = #{cs_reply_content}
+		WHERE CS_REPLY_NO =
+		#{cs_reply_no}
+	</update>
+
+	<!-- 댓글 번호로 댓글 삭제 -->
+	<delete id="deleteReplyByCSReplyNo" parameterType="_int">
+		DELETE FROM
+		TABLE_CS_REPLY
+		WHERE CS_REPLY_NO = #{cs_reply_no}
+	</delete>
+
+	<!-- 게시글 번호로 댓글 삭제 -->
+	<delete id="deleteReplyByCSBoardNo" parameterType="_int">
+		DELETE FROM
+		TABLE_CS_REPLY
+		WHERE CS_BOARD_NO = #{cs_board_no}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CS_Files">
+
+	<insert id="insertFile" parameterType="CS_filesVO">
+		INSERT INTO TABLE_CS_FILES
+		(CS_FILE_NAME, CS_BOARD_NO, CS_ORIGINAL_FILE_NAME)
+		VALUES (#{cs_file_name}, #{cs_board_no}, #{cs_original_file_name})
+	</insert>
+
+	<select id="getFiles" parameterType="_int" resultType="CS_filesVO"> 
+		SELECT CS_FILE_NAME, CS_BOARD_NO, CS_ORIGINAL_FILE_NAME FROM TABLE_CS_FILES 
+		WHERE CS_BOARD_NO = #{cs_board_no}
+	</select>
+
+	<delete id="delete" parameterType="_int">
+		DELETE FROM TABLE_CS_FILES
+		WHERE CS_BOARD_NO = #{cs_board_no}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

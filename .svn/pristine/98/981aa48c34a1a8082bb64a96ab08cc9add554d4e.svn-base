@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.team.app.user.vo.UserVO" alias="userVO" />
+		<typeAlias type="com.team.app.cs.board.vo.CS_BoardVO" alias="CS_BoardVO" />
+		<typeAlias type="com.team.app.cs.board.vo.CS_FilesVO" alias="CS_FilesVO" />
+		<typeAlias type="com.team.app.cs.board.vo.CS_ReplyVO" alias="CS_ReplyVO" />
+		<typeAlias type="com.team.app.brag.board.vo.Brag_BoardVO" alias="Brag_BoardVO" />
+		<typeAlias type="com.team.app.brag.board.vo.Brag_ReplyVO" alias="Brag_ReplyVO" />
+		<typeAlias type="com.team.app.manage.vo.ManageStoreVO" alias="manageStoreVO" />
+		<typeAlias type="com.team.app.manage.vo.ManageStoreVO" alias="manageStoreVO" />
+		<typeAlias type="com.team.app.manage.vo.ManageEventVO" alias="manageEventVO" />
+		<typeAlias type="com.team.app.manage.vo.ManageNoticeVO" alias="manageNoticeVO" />
+		<typeAlias type="com.team.app.brag.board.vo.Brag_FilesVO" alias="Brag_FilesVO" />
+		<typeAlias type="com.team.app.store.vo.StoreVO" alias="StoreVO" />
+      <typeAlias type="com.team.app.consult.vo.ConsultVO" alias="consultVO" />
+        <typeAlias type="com.team.app.store.vo.StoreReviewVO" alias="StoreReviewVO" />
+        <typeAlias type="com.team.app.myPage.vo.MyPageAddressVO" alias="addressVO"/>
+        <typeAlias type="com.team.app.myPage.vo.MyPageCartVO" alias="cartVO"/>
+        <typeAlias type="com.team.app.cc.vo.CcVO" alias="ccVO"/>
+        <typeAlias type="com.team.app.payment.vo.PaymentVO" alias="PaymentVO"/>
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.OracleDriver" />
+				<property name="url"
+					value="jdbc:oracle:thin:@localhost:1521:XE" />
+				<property name="username" value="hr" />
+				<property name="password" value="hr" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="com/team/mybatis/sql/user.xml" />
+		<mapper resource="com/team/mybatis/sql/cs_board.xml" />
+		<mapper resource="com/team/mybatis/sql/cs_files.xml" />
+		<mapper resource="com/team/mybatis/sql/brag_board.xml" />
+		<mapper resource="com/team/mybatis/sql/brag_files.xml" />
+		<mapper resource="com/team/mybatis/sql/manage.xml" />
+		<mapper resource="com/team/mybatis/sql/event.xml" />
+		<mapper resource="com/team/mybatis/sql/store.xml" />
+		<mapper resource="com/team/mybatis/sql/consult.xml" />
+		<mapper resource="com/team/mybatis/sql/notice.xml" />
+		<mapper resource="com/team/mybatis/sql/myPage.xml"/>
+		<mapper resource="com/team/mybatis/sql/cc.xml"/>
+		<mapper resource="com/team/mybatis/sql/payment.xml"/>
+	</mappers>
+</configuration>

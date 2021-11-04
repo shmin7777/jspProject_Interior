@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MyPage">
+
+		<!-- 장바구니 목록 -->
+	   <select id="getCart" parameterType="map" resultType="cartVO">
+			SELECT * FROM
+				(SELECT ROWNUM R,  B.* FROM 
+					(SELECT * FROM TABLE_CART c 
+					JOIN TABLE_STORE s ON c.PRODUCT_NO = s.PRODUCT_NO 
+					ORDER BY c.CART_NO DESC) B)
+			WHERE (R BETWEEN #{startRow} AND #{endRow}) AND USER_id = #{user_id}
+	   </select>
+	   
+	   <!-- 장바구니 등록 -->
+	   <insert id="addCart" parameterType="cartVO">
+	   		INSERT INTO TABLE_CART
+			(CART_NO, USER_ID, PRODUCT_NO, PRODUCT_NAME, PRODUCT_PRICE, CART_QUANTITY)
+			VALUES(SEQ_CART.NEXTVAL, #{user_id}, #{product_no}, #{product_name}, #{product_price}, #{cart_quantity})
+	   </insert>
+	   
+	   <!-- 배송지 등록 -->
+	   <insert id="registerAddress" parameterType="addressVO">
+	   		INSERT INTO TABLE_ADDRESS_REGISTER
+			(ADDRESS_NO, LOCATION_NAME, RECIPIENT, USER_PHONE_NO, USER_ZIPCODE, USER_ADDRESS, USER_ADDRESS_DETAIL, USER_ADDRESS_ETC, USER_ID)
+			VALUES(SEQ_ADDRESS.NEXTVAL, #{location_name}, #{recipient}, #{user_phone_no}, #{user_zipcode}, #{user_address}, #{user_address_detail}, #{user_address_etc}, #{user_id})
+	   </insert>
+	   
+	   <!-- 배송지 목록 -->
+	   <select id="showAddress" parameterType="map" resultType="addressVO">
+	   		SELECT LOCATION_NAME, RECIPIENT, USER_PHONE_NO, USER_ADDRESS, USER_ADDRESS_DETAIL FROM TABLE_ADDRESS_REGISTER
+			WHERE USER_ID = #{user_id}
+	   </select>
+	   
+	   <!-- 구매내역  -->
+	   <select id="showPurchaseList" parameterType="map" resultType="PaymentVO">
+ 			SELECT * FROM 
+			(SELECT ROWNUM R, b.* FROM
+			(SELECT p.PAY_NO, p.PRODUCT_NAME, d.DELIVERY_STAT, PAY_DATE FROM TABLE_DELEVERY d, TABLE_PAYMENT p
+			WHERE USER_ID = #{user_id} ORDER BY p.PAY_NO DESC) b)
+			WHERE R BETWEEN #{startRow} AND #{endRow}
+	   </select>
+	   
+	   	<!-- 전체 구매내역 수 -->
+		<select id="purchaseGetTotal" parameterType="string" resultType="_int">
+			SELECT COUNT(PAY_NO) FROM TABLE_PAYMENT WHERE USER_ID = #{user_id}
+		</select>
+		
+		<!-- 장바구니 수 -->
+		<select id="cartGetTotal" parameterType="string" resultType="_int">
+			SELECT COUNT(CART_NO) FROM TABLE_CART WHERE USER_ID = #{user_id}
+		</select>
+		
+		<!-- 배송상태 -->
+		<select id="deliveryStat" resultType="String">
+			SELECT DELIVERY_STAT FROM TABLE_DELEVERY
+		</select>
+		
+		<!-- 상담내역보기 -->
+		<select id="showConsultList" parameterType="map" resultType="ConsultVO">
+			SELECT ROWNUM, USER_ID, CNS_TOTAL_PRICE, CNS_DATE, 
+			CNS_ROOMTYPE, CNS_SQUARE, CNS_ROOMCNT, CNS_THEMESELECT
+			FROM TABLE_CONSULT
+			WHERE USER_ID = #{user_id} AND (ROWNUM BETWEEN #{startRow} AND #{endRow}) ORDER BY CNS_NO DESC
+		</select>
+		
+		<!-- 상담내역 수 -->
+		<select id="consultGetTotal" resultType="_int">
+			SELECT COUNT(CNS_NO) FROM TABLE_CONSULT
+			WHERE USER_ID = #{user_id}
+		</select>
+		
+		 <!-- 문의내역보기 -->
+		<select id="showInquireList" parameterType="map" resultType="CS_BoardVO">
+			SELECT * FROM
+			(SELECT ROWNUM R, b.* FROM
+			(SELECT CS_BOARD_NO, CS_BOARD_SELECT, CS_BOARD_TITLE, CS_BOARD_DATE
+			FROM TABLE_CS_BOARD
+			WHERE USER_NO = #{user_no} ORDER BY CS_BOARD_NO DESC) b)
+			WHERE R BETWEEN #{startRow} AND #{endRow}
+		</select>
+		
+		<!-- 문의내역 수 -->
+		<select id="inquireGetTotal" resultType="_int">
+			SELECT COUNT(CS_BOARD_NO) FROM TABLE_CS_BOARD
+			WHERE USER_NO = #{user_no}
+		</select>
+		
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+

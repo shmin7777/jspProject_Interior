@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Brag_Files">
+
+	<insert id="insertFile" parameterType="Brag_filesVO">
+		INSERT INTO TABLE_BRAG_FILES
+		(BRAG_FILE_NAME, BRAG_BOARD_NO, BRAG_ORIGINAL_FILE_NAME)
+		VALUES (#{brag_file_name}, #{brag_board_no}, #{brag_original_file_name})
+	</insert>
+
+	<select id="getFiles" parameterType="_int" resultType="Brag_filesVO"> 
+		SELECT BRAG_FILE_NAME, BRAG_BOARD_NO, BRAG_ORIGINAL_FILE_NAME FROM TABLE_BRAG_FILES 
+		WHERE BRAG_BOARD_NO = #{brag_board_no}
+	</select>
+
+	<delete id="delete" parameterType="_int">
+		DELETE FROM TABLE_BRAG_FILES
+		WHERE BRAG_BOARD_NO = #{brag_board_no}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

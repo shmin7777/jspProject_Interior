@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Manage">
+   <insert id="insertStore" parameterType="manageStoreVO">
+   	INSERT INTO TABLE_STORE VALUES(
+   		SEQ_STORE.NEXTVAL,#{product_category}, #{product_subcategory}, #{product_name},
+   		#{product_price}, #{product_info}, #{product_img}, #{product_steel1},#{product_steel2},#{product_steel3}
+   	)
+   </insert>
+   
+    <insert id="insertEvent" parameterType="manageEventVO">
+   	INSERT INTO TABLE_EVENT VALUES(
+   		TABLE_EVENT_SEQ.NEXTVAL,#{event_title}, #{event_term}, #{event_content}, #{event_image}
+   	)
+   </insert>
+   
+    <insert id="insertNotice" parameterType="manageNoticeVO">
+   	INSERT INTO TABLE_NOTICE VALUES(
+   		TABLE_EVENT_SEQ.NEXTVAL,#{notice_title},#{notice_content}, #{notice_date}
+   	)
+   </insert>
+   
+   <insert id="insertCc" parameterType="ccVO">
+   	INSERT INTO TABLE_CC VALUES
+   	(
+   		SEQ_STORE.NEXTVAL, #{cc_name}, #{cc_cost}, #{cc_term},
+   		#{cc_content}, #{cc_main_image}, #{cc_steel1}, #{cc_steel2},#{cc_steel3}
+   	)
+   </insert>
+   
+   
+   
+</mapper>
+
+
+
+
+
+
+
+
+
+

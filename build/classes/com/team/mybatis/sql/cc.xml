@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cc">
+   <insert id="insertCc" parameterType="ccVO">
+   	INSERT INTO TABLE_CC VALUES
+   	(
+   		TABLE_CC_SEQ.NEXTVAL, #{cc_name}, #{cc_cost}, #{cc_term}, #{cc_content}, #{cc_main_image}, NULL, NULL, #{cc_steel3}
+   	)
+   </insert>
+   
+   <select id="getList" parameterType="map" resultType="ccVO">
+		SELECT CC_NO, CC_NAME, CC_COST, CC_TERM, CC_CONTENT, CC_MAIN_IMAGE, CC_STEEL1, CC_STEEL2, CC_STEEL3
+		FROM
+			(SELECT ROWNUM R, C.* FROM
+				(SELECT * FROM TABLE_CC ORDER BY CC_NO DESC) C)
+		WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+   <!-- 전체 문의글 수 -->
+	<select id="getTotal" resultType="_int">
+		SELECT COUNT(CC_NO) FROM TABLE_CC
+	</select>
+   
+   <!-- 상세보기 -->
+   	<select id="getDetail" parameterType="_int" resultType="ccVO">
+		SELECT CC_NO, CC_NAME, CC_COST, CC_TERM, CC_CONTENT, CC_MAIN_IMAGE, CC_STEEL1, CC_STEEL2, CC_STEEL3
+		FROM TABLE_CC
+		WHERE CC_NO = #{cc_no}
+	</select>
+   
+   
+   
+</mapper>
+
+
+
+
+
+
+
+
+
+
